@@ -1,0 +1,8 @@
+# Rider specific files
+.idea/workspace.xml
+*.suo
+*.user
+
+# Build artifacts
+bin/
+obj/
