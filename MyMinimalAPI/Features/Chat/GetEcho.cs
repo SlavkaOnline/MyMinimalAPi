@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MyMinimalAPI.Infra;
 
-namespace MyMinimalAPI.Features.F1;
+namespace MyMinimalAPI.Features.Chat;
 
-public class GetEcho : IRegisterEndpoint<GroupF1>
+public class GetEcho : IRegisterEndpoint<ChatGroup>
 {
     public static RouteHandlerBuilder RegisterEndpoint(RouteGroupBuilder builder)
     {

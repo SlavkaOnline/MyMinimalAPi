@@ -4,14 +4,13 @@ namespace MyMinimalAPI.Infra;
 
 public static class EndpointRouteBuilderExtensions
 {
-
     public static void RegisterEndpointsFromAssembly(this IEndpointRouteBuilder builder,
         Assembly assembly)
     {
         var types = assembly.GetTypes()
-            .Where(t => t is {IsClass: true, IsAbstract: false} && t.GetInterfaces().Any(i => i == typeof(IRegisterEndpoint<>)));
-
-        var groups = types.GroupBy(x => x.GetGenericArguments()[1]);
+            .Where(t => t is {IsClass: true, IsAbstract: false} && t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRegisterEndpoint<>)));
+        
+        var groups = types.GroupBy(GetGenericType);
 
         foreach (var group in groups)
         {
@@ -21,12 +20,18 @@ public static class EndpointRouteBuilderExtensions
                 RegisterGroupEndpoints(builder, rgb, type);
             }
         }
+
+        static Type GetGenericType(Type type)
+        {
+            var i =  type.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRegisterEndpoint<>));
+            return i.GetGenericArguments()[0];
+        }
     }
 
     private static RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder, Type type)
     {
         var method = type.GetMethod(
-            nameof(IGroupEndpont.GetRouteGroupBuilder),
+            nameof(IGroupEndpoint.GetRouteGroupBuilder),
             BindingFlags.Public | BindingFlags.Static,
             new[] {typeof(RouteGroupBuilder)}
         );

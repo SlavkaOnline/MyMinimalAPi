@@ -1,6 +1,6 @@
 namespace MyMinimalAPI.Infra;
 
-public interface IGroupEndpont
+public interface IGroupEndpoint
 {
     public static abstract RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder);
 }

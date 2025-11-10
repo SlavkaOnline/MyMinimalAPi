@@ -2,11 +2,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MyMinimalAPI.Infra;
 
-namespace MyMinimalAPI.Features.F2;
+namespace MyMinimalAPI.Features.Calc;
 
-public class GetSum : IRegisterEndpoint<GroupF2>
+public class GetSum : IRegisterEndpoint<CalcGroup>
 {
-    
     public static RouteHandlerBuilder RegisterEndpoint(RouteGroupBuilder builder)
     {
         return builder.MapPost("/sum", Sum)
@@ -14,8 +13,8 @@ public class GetSum : IRegisterEndpoint<GroupF2>
             .WithSummary("Получить сумму");
     }
     
-    public static Results<NotFound, Ok<SumResult>> Sum([FromBody] Arguments args)
+    public static Results<NotFound, Ok<CalsResult>> Sum([FromBody] Arguments args)
     {
-        return TypedResults.Ok(new SumResult(args.A + args.B));
+        return TypedResults.Ok(new CalsResult(args.A + args.B));
     }
 }

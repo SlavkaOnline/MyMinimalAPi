@@ -1,3 +1,3 @@
-namespace MyMinimalAPI.Features.F2;
+namespace MyMinimalAPI.Features.Calc;
 
 public record Arguments(int A, int B);
