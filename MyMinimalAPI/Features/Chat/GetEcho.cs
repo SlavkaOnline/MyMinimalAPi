@@ -4,7 +4,7 @@ using MyMinimalAPI.Infra;
 
 namespace MyMinimalAPI.Features.Chat;
 
-public class GetEcho : IRegisterEndpoint<ChatGroup>
+public class GetEcho : IRegisterEndpoint<ChatRegisterGroup>
 {
     public static RouteHandlerBuilder RegisterEndpoint(RouteGroupBuilder builder)
     {

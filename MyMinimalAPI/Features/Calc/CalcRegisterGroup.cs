@@ -2,9 +2,9 @@ using MyMinimalAPI.Infra;
 
 namespace MyMinimalAPI.Features.Calc;
 
-public class CalcGroup : IGroupEndpoint
+public class CalcRegisterGroup : IRegisterGroup
 {
-    public static RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder)
+    public static RouteGroupBuilder GetBuilder(IEndpointRouteBuilder builder)
     {
         return builder
             .MapGroup("calc")

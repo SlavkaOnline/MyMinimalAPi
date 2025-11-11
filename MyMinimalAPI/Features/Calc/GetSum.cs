@@ -4,7 +4,7 @@ using MyMinimalAPI.Infra;
 
 namespace MyMinimalAPI.Features.Calc;
 
-public class GetSum : IRegisterEndpoint<CalcGroup>
+public class GetSum : IRegisterEndpoint<CalcRegisterGroup>
 {
     public static RouteHandlerBuilder RegisterEndpoint(RouteGroupBuilder builder)
     {

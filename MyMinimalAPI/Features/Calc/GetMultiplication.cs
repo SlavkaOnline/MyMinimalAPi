@@ -4,7 +4,7 @@ using MyMinimalAPI.Infra;
 
 namespace MyMinimalAPI.Features.Calc;
 
-public class GetMultiplication: IRegisterEndpoint<CalcGroup>
+public class GetMultiplication: IRegisterEndpoint<CalcRegisterGroup>
 {
     public static RouteHandlerBuilder RegisterEndpoint(RouteGroupBuilder builder)
     {

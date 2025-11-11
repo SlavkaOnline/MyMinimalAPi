@@ -7,49 +7,52 @@ public static class EndpointRouteBuilderExtensions
     public static void RegisterEndpointsFromAssembly(this IEndpointRouteBuilder builder,
         Assembly assembly)
     {
-        var types = assembly.GetTypes()
-            .Where(t => t is {IsClass: true, IsAbstract: false} && t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRegisterEndpoint<>)));
+        var groups = assembly.GetTypes()
+            .Where(t => t is { IsClass: true, IsAbstract: false }) 
+            .Select(t => new
+            {
+                ImplementationType = t,
+                Interface = t.GetInterfaces() 
+                    .SingleOrDefault(i => i.IsGenericType && 
+                                          i.GetGenericTypeDefinition() == typeof(IRegisterEndpoint<>))
+            })
+            .Where(x => x.Interface != null) 
+            .GroupBy( 
+                x => x.Interface!.GetGenericArguments()[0], 
+                x => x.ImplementationType 
+            );
         
-        var groups = types.GroupBy(GetGenericType);
-
         foreach (var group in groups)
         {
-            var rgb = GetRouteGroupBuilder(builder, group.Key);
-            foreach (var type in group)
+            var rgb = GetRouteGroupBuilder(builder, group.Key); 
+            foreach (var type in group) 
             {
-                RegisterGroupEndpoints(builder, rgb, type);
+                RegisterGroupEndpoints(rgb, type);
             }
-        }
-
-        static Type GetGenericType(Type type)
-        {
-            var i =  type.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRegisterEndpoint<>));
-            return i.GetGenericArguments()[0];
         }
     }
 
     private static RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder, Type type)
     {
         var method = type.GetMethod(
-            nameof(IGroupEndpoint.GetRouteGroupBuilder),
+            nameof(IRegisterGroup.GetBuilder),
             BindingFlags.Public | BindingFlags.Static,
-            new[] {typeof(RouteGroupBuilder)}
+            [typeof(RouteGroupBuilder)]
         );
 
-       return  (RouteGroupBuilder)method?.Invoke(null, new object[] {builder});
+       return (RouteGroupBuilder)method?.Invoke(null, [builder])!;
     }
-    
-    public static void RegisterGroupEndpoints(
-        IEndpointRouteBuilder builder,
+
+    private static void RegisterGroupEndpoints(
         RouteGroupBuilder routeGroupBuilder,
         Type endpoint)
     {
         var method = endpoint.GetMethod(
             "RegisterEndpoint",
             BindingFlags.Public | BindingFlags.Static,
-            new[] {typeof(RouteGroupBuilder)}
+            [typeof(RouteGroupBuilder)]
         );
 
-        method?.Invoke(null, new object[] {routeGroupBuilder});
+        method?.Invoke(null, [routeGroupBuilder]);
     }
 }

@@ -2,9 +2,9 @@ using MyMinimalAPI.Infra;
 
 namespace MyMinimalAPI.Features.Chat;
 
-public class ChatGroup : IGroupEndpoint
+public class ChatRegisterGroup : IRegisterGroup
 {
-    public static RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder)
+    public static RouteGroupBuilder GetBuilder(IEndpointRouteBuilder builder)
     {
         return builder.MapGroup("chant")
             .WithTags("Chanting");
