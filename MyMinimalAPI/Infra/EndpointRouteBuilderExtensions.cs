@@ -35,7 +35,7 @@ public static class EndpointRouteBuilderExtensions
     private static RouteGroupBuilder GetRouteGroupBuilder(IEndpointRouteBuilder builder, Type type)
     {
         var method = type.GetMethod(
-            nameof(IRegisterGroup.GetBuilder),
+            nameof(IRegisterGroup.ConfigureBuilder),
             BindingFlags.Public | BindingFlags.Static,
             [typeof(RouteGroupBuilder)]
         );

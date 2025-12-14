@@ -1,6 +1,13 @@
 namespace MyMinimalAPI.Infra;
 
+/// <summary>
+/// Регистратор группы
+/// </summary>
 public interface IRegisterGroup
 {
-    public static abstract RouteGroupBuilder GetBuilder(IEndpointRouteBuilder builder);
+    /// <summary>
+    /// Сконфигурировать билдер группы
+    /// </summary>
+    /// <returns></returns>
+    public static abstract RouteGroupBuilder ConfigureBuilder(IEndpointRouteBuilder builder);
 }
